@@ -19,4 +19,3 @@ npx create-react-app .
 
 # Run the development server
 npm start
----
