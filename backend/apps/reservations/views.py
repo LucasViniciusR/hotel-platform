@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from apps.reservations.models import Reservation
 from apps.reservations.serializers import ReservationSerializer
+from apps.reservations.tasks import send_reservation_confirmation
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
@@ -25,20 +26,18 @@ class ReservationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        room = serializer.validated_data['room']
-        check_in = serializer.validated_data['check_in']
-        check_out = serializer.validated_data['check_out']
-
         overlap = Reservation.objects.filter(
-            room=room,
             status__in=['pending', 'confirmed'],
-            check_in__lt=check_out,
-            check_out__gt=check_in
+            room=serializer.validated_data['room'],
+            check_in=serializer.validated_data['check_in'],
+            check_out=serializer.validated_data['check_out'],
         ).exists()
 
         if overlap:
             raise ValidationError("This room is already booked for the selected dates.")
 
-        serializer.save(user=request.user, status='confirmed')
+        reservation = serializer.save(user=request.user, status='confirmed')
+
+        send_reservation_confirmation.delay(reservation.id)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
