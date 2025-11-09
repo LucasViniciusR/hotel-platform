@@ -9,16 +9,54 @@ The idea is to keep it simple but structured. something that could be expanded l
 I'm always open to feedback and ideas. Feel free to reach out and suggest changes.
 If you’d like to improve something, suggest a feature, or just leave a comment, you can open an issue or a pull request!
 
-# Planned Features
+## Features
 
-User authentication with roles (admin, staff, customer)
+* **User authentication with roles**: Admin, Staff, Customer
+* **CRUD operations**: Rooms, Guests, Reservations
+* **Email notifications**: Reservation confirmations using Celery
+* **Scheduled tasks**: Automatic cleanup of expired reservations with Celery Beat
+* **Dockerized setup**: Easy local development and testing
 
-CRUD for rooms, guests, and reservations
+---
 
-Email confirmations using Celery
+## Getting Started
 
-Scheduled tasks with Celery Beat
+### Prerequisites
 
-Docker setup for easy local development
+* [Docker & Docker Compose](https://docs.docker.com/get-docker/)
+* Python 3.11+ (optional if you want to run without Docker)
 
-I’ll keep improving it over time and make it as easy as possible for others to contribute or learn from.
+### Quick Start (Docker)
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/hotel-platform.git
+   cd hotel-platform
+   ```
+
+2. Copy the example file and fill in the required values:
+
+   ```
+   cp .env.example .env
+   ```
+
+3. Start the stack:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+4. Access the API:
+
+   ```
+   http://localhost:8000/api/
+   ```
+
+---
+
+## Future Plans
+
+* Add a React frontend for full-stack demo
+* Improve email templates and notifications
+* Add more roles and permissions

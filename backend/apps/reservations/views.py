@@ -26,11 +26,15 @@ class ReservationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        room = serializer.validated_data['room']
+        check_in = serializer.validated_data['check_in']
+        check_out = serializer.validated_data['check_out']
+
         overlap = Reservation.objects.filter(
             status__in=['pending', 'confirmed'],
-            room=serializer.validated_data['room'],
-            check_in=serializer.validated_data['check_in'],
-            check_out=serializer.validated_data['check_out'],
+            room=room,
+            check_in__lt=check_out,
+            check_out__gt=check_in,
         ).exists()
 
         if overlap:

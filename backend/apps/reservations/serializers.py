@@ -3,14 +3,8 @@ from .models import Reservation
 from apps.hotels.models import Room
 
 
-class ReservationCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reservation
-        fields = ['room', 'check_in', 'check_out']
-
-
 class ReservationSerializer(serializers.ModelSerializer):
-    room = serializers.StringRelatedField()
+    room = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all())
 
     class Meta:
         model = Reservation
