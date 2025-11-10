@@ -17,3 +17,7 @@ class RoomViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         hotel_id = self.kwargs.get('hotel_pk')
         return Room.objects.filter(hotel_id=hotel_id)
+    
+    def perform_create(self, serializer):
+        hotel_id = self.kwargs.get('hotel_pk')
+        serializer.save(hotel_id=hotel_id)

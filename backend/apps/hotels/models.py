@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
+
 class RoomType(models.TextChoices):
     SINGLE = 'single', 'Single'
     DOUBLE = 'double', 'Double'
@@ -28,3 +29,9 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.hotel.name} - Room {self.number}"
+
+class RoomImage(models.Model):
+    room = models.ForeignKey("Room", on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="rooms/")
+    caption = models.CharField(max_length=255, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
