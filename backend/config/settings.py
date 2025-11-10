@@ -172,6 +172,3 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
-import logging
-logging.basicConfig(level=logging.DEBUG)
